@@ -1,0 +1,170 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html{
+    height: 100%;
+}
+
+body {
+    position: relative;
+    margin: 0;
+    min-height: 100%;
+    padding-bottom: 6.74rem;
+    box-sizing: inherit;
+    align-items: center;
+    font-family: 'Roboto Slab', serif;
+    background-image: url('images/background.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    backdrop-filter: blur(5px);
+    font-family: 'Roboto Slab', sans-serif;
+}
+
+/* ----------- Navbar ----------- */
+
+.navbar {
+    display: flex;
+    text-align: center;
+    padding: 20px;
+}
+
+.logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+nav {
+    flex: 1;
+    text-align: center;
+
+
+}
+
+nav ul {
+    display: inline-block;
+    list-style-type: none;
+    margin-top: 50px;
+    margin-bottom: 25px;
+
+}
+
+nav ul li {
+    font-size: 20px;
+    display: inline-block;
+    margin-right: 30px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: antiquewhite;
+}
+
+/* ----------- Main ----------- */
+
+p {
+    color: antiquewhite;
+}
+
+.container {
+    max-width: 1500px;
+    margin: auto;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.col-2 {
+    flex-basis: 50%;
+    min-width: 300px;
+    color: antiquewhite;
+}
+
+.col-2 img {
+    max-width: 60%;
+    padding: 50px 0px 50px 0px;
+    margin-left: 250px;
+}
+
+.col-2 h1 {
+    font-size: 35px;
+    line-height: 60px;
+    margin: 25px 0;
+}
+
+.categories {
+    margin: 70px 0;
+}
+
+.categories h1 {
+    font-size: 30px;
+    color: antiquewhite;
+    text-align: center;
+    margin-bottom: 50px;
+
+}
+
+.col-3 {
+    flex-basis: 30%;
+    min-width: 250px;
+    margin-bottom: 30px;
+    transition: transform 0.5s;
+}
+
+.col-3 img {
+    width: 100%;
+}
+
+.small-container {
+    max-width: 1080px;
+    margin: auto;
+    padding-left: 75px;
+    padding-right: 75px;
+}
+
+.col-3:hover {
+    transform: translateY(-5px);
+}
+
+/* ----------- Footer ----------- */
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    display: block;
+    text-align: center;
+    border-top: solid antiquewhite 1px;
+}
+
+footer ul {
+    display: inline-block;
+    list-style-type: none;
+    margin-top: 25px;
+    margin-bottom: 25px;
+
+}
+
+footer ul li {
+    color: antiquewhite;
+    font-size: 14px;
+    justify-content: center;
+    align-content: center;
+    display: inline-block;
+    margin-right: 30px;
+}
+
+footer ul li a {
+    text-decoration: none;
+    color: antiquewhite;
+}

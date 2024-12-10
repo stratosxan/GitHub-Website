@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Αρχική</title>
+    <link rel="stylesheet" href="homepage.css" asp-append-version="true" />
+    <script src="loggedin.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lora:wght@500&family=Roboto+Condensed&family=Roboto+Slab&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+
+    <header>
+        <div class="navbar">
+            <nav>
+                <a href="homepage.html">
+                    <img class="logo" src="images/logo.png" alt="logo" width="125px" />
+                </a>
+                <ul>
+                    <li> <a href="homepage.html">Αρχική</a> </li>
+                    <li> <a href="phones.html">Κινητά Τηλέφωνα</a> </li>
+                    <li> <a href="cameras.html">Κάμερες Ασφαλείας</a> </li>
+                    <li> <a href="harddrives.html">Σκληροί δίσκοι</a> </li>
+                    <li> <a href="account.html" class="account">Λογαριασμός</a> </li>
+                </ul>
+                <a class="cart" href="cart.html">
+                    <img src="images/cart.png" alt="shopping cart" width="30" height="20">
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="row">
+                <div class="col-2">
+                    <h1> Το μέλλον είναι εδώ! <br> Εξερεύνησε το με την τεχνολογία μας. </h1>
+                    <p>
+                        Θα βρεις μια ευρεία γκάμα τεχνολογικών προϊόντων,
+                        όπως κινητά τηλέφωνα, κάμερες ασφαλείας, σκληρούς δίσκους και άλλα.
+                    </p>
+                </div>
+                <div class="col-2">
+                    <img src="images/mainpage.png" alt="background photo" />
+                </div>
+            </div>
+
+            <!-- 3 κατηγορίες απο κάτω -->
+
+            <div class="categories">
+                <div class="small-container">
+                    <h1> Δημοφιλή προϊόντα </h1>
+                    <div class="row">
+                        <div class="col-3">
+                            <a href="phones.html">
+                                <img src="images/phones.jpg" alt="phones category">
+                            </a>
+                        </div>
+                        <div class="col-3">
+                            <a href="cameras.html">
+                                <img src="images/cameras.jpg" alt="cammeras category">
+                            </a>
+                        </div>
+                        <div class="col-3">
+                            <a href="harddrives.html">
+                                <img src="images/harddrive.jpg" alt="hdds category">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer">
+            <ul class="footer-links">
+                <li> <a> Copyright &copy; eShop.com </a> </li>
+                <li> <a href="about.html"> Σχετικά </a> </li>
+                <li> <a href="policy.html"> Όροι χρήσης </a> </li>
+            </ul>
+        </div>
+    </footer>
+
+</body>
+
+</html>
+
+<script>
+
+    window.addEventListener('DOMContentLoaded', async () => {
+        const accountNav = document.querySelector('.account');
+
+        try {
+            const response = await fetch('/checkLoginStatus');
+            if (response.ok) {
+                const { loggedIn } = await response.json();
+                window.loggedIn = loggedIn;
+
+                if (window.loggedIn) {
+                    accountNav.innerHTML = '<a href="profile.html">Ο Λογαριασμός μου</a>';
+                } else {
+                    accountNav.innerHTML = '<a href="account.html">Σύνδεση</a>';
+                }
+            } else {
+                console.error('Error checking login status');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+</script>

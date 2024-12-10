@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Αρχική</title>
+    <link rel="stylesheet" href="profile.css" asp-append-version="true" />
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lora:wght@500&family=Roboto+Condensed&family=Roboto+Slab&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+
+<body>
+
+    <header>
+        <div class="navbar">
+            <nav>
+                <a href="homepage.html">
+                    <img class="logo" src="images/logo.png" alt="logo" width="125px" />
+                </a>
+                <ul>
+                    <li> <a href="homepage.html">Αρχική</a> </li>
+                    <li> <a href="phones.html">Κινητά Τηλέφωνα</a> </li>
+                    <li> <a href="cameras.html">Κάμερες Ασφαλείας</a> </li>
+                    <li> <a href="harddrives.html">Σκληροί δίσκοι</a> </li>
+                    <li> <a href="account.html" class="account">Λογαριασμός</a> </li>
+                </ul>
+                <a class="cart" href="cart.html">
+                    <img src="images/cart.png" alt="shopping cart" width="30" height="20">
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="card">
+            <img src="/images/user.png" alt="User" style="width:100%">
+            <h1> User's Name </h1>
+            <p class="title">Unkown User</p>
+            <p>Not logged in</p>
+            <p><button id="Orders"> Παραγγελίες </button></p>
+            <p><button id="Logout"> Αποσύνδεση </button></p>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer">
+            <ul class="footer-links">
+                <li> <a> Copyright &copy; eShop.com </a> </li>
+                <li> <a href="about.html"> Σχετικά </a> </li>
+                <li> <a href="policy.html"> Όροι χρήσης </a> </li>
+            </ul>
+        </div>
+    </footer>
+
+</body>
+
+</html>
+
+
+<script>
+    
+
+window.addEventListener('DOMContentLoaded', async () => {
+
+    const accountNav = document.querySelector('.account');
+    const logoutButton = document.getElementById('Logout');
+    const cardDiv = document.querySelector('.card');
+
+    try {
+        const response = await fetch('/checkLoginStatus');
+        if (response.ok) {
+            const { loggedIn } = await response.json();
+            window.loggedIn = loggedIn;
+
+            if (window.loggedIn) {
+                accountNav.innerHTML = '<a href="profile.html">Ο Λογαριασμός μου</a>';
+                
+                const userInfoResponse = await fetch('/userInfo');
+                if (userInfoResponse.ok) {
+                    const userInfo = await userInfoResponse.json();
+                    // console.log(userInfo)
+                    const userInfoHTML = `
+                        <img src="/images/user.png" alt="${userInfo.username}" style="width:100%">
+                        <h1>${userInfo.username}</h1>
+                        <p class="title">${userInfo.email}</p>
+                        <p> Ο Προσωπικός μου λογαριασμός</p>
+                        <p><button id="Orders"> Παραγγελίες </button></p>
+                        <p><button id="Logout"> Αποσύνδεση </button></p>
+                    `;
+                    cardDiv.innerHTML = userInfoHTML;
+                    
+
+                    const newLogoutButton = document.getElementById('Logout');
+                    newLogoutButton.addEventListener('click', async () => {
+                        try {
+                            const response = await fetch('/logout', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            });
+                    
+                            if (response.ok) {
+                                window.loggedIn = false;
+                                window.location.href = 'homepage.html';
+                            } else {
+                                const errorMessage = await response.text();
+                                console.error('Logout failed:', errorMessage);
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                        }
+                    });
+                } else {
+                    console.error('Error fetching user info:', userInfoResponse.statusText);
+                }
+            } else {
+                accountNav.innerHTML = '<a href="account.html">Σύνδεση</a>';
+            }
+        } else {
+            console.error('Error checking login status');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+
+
+    document.getElementById("Orders").onclick = function() {
+        // Redirect to orders.html
+        window.location.href = "orders.html";
+    };
+});
+</script>

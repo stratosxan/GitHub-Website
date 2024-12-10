@@ -1,0 +1,146 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html{
+    height: 100%;
+}
+
+body {
+    position: relative;
+    margin: 0;
+    min-height: 100%;
+    padding-bottom: 6.74rem;
+    box-sizing: inherit;
+    align-items: center;
+    font-family: 'Roboto Slab', serif;
+    background-image: url('images/background.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    backdrop-filter: blur(5px);
+    font-family: 'Roboto Slab', sans-serif;
+}
+
+/* ----------- Navbar ----------- */
+
+.navbar {
+    display: flex;
+    text-align: center;
+    padding: 20px;
+}
+
+.logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+nav {
+    flex: 1;
+    text-align: center;
+
+
+}
+
+nav ul {
+    display: inline-block;
+    list-style-type: none;
+    margin-top: 50px;
+    margin-bottom: 25px;
+
+}
+
+nav ul li {
+    font-size: 20px;
+    display: inline-block;
+    margin-right: 30px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: antiquewhite;
+}
+
+
+
+/* ----------- Main ----------- */
+.title_test {
+    margin: 25px 0px 25px 0px;
+    text-align: center;
+    position: relative; /* Change to relative positioning */
+    top: 50%;
+    transform: translateY(-50%); /* Center vertically */
+    color: whitesmoke;
+}
+
+.order {
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    width: 33.333%; /* 1/3 of the total width */
+    margin: 0 auto; /* Center horizontally */    
+}
+
+.order h3 {
+    margin-top: 0;
+}
+
+.order ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.order ul li {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+}
+
+.order ul li img {
+    margin-right: 10px;
+}
+
+.order ul li p {
+    margin-bottom: 5px; /* Add margin-bottom to create space between <p> elements */
+}
+
+
+/* ----------- Footer ----------- */
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    display: block;
+    text-align: center;
+    border-top: solid antiquewhite 1px;
+}
+
+footer ul {
+    display: inline-block;
+    list-style-type: none;
+    margin-top: 25px;
+    margin-bottom: 25px;
+
+}
+
+footer ul li {
+    color: antiquewhite;
+    font-size: 14px;
+    justify-content: center;
+    align-content: center;
+    display: inline-block;
+    margin-right: 30px;
+}
+
+footer ul li a {
+    text-decoration: none;
+    color: antiquewhite;
+}

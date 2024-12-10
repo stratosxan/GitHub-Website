@@ -1,0 +1,269 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html{
+    height: 100%;
+}
+
+body {
+    position: relative;
+    margin: 0;
+    min-height: 100%;
+    padding-bottom: 6.74rem;
+    box-sizing: inherit;
+    align-items: center;
+    font-family: 'Roboto Slab', serif;
+    background-image: url('images/background.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    backdrop-filter: blur(5px);
+    font-family: 'Roboto Slab', sans-serif;
+}
+
+
+/* ----------- Navbar ----------- */
+.navbar {
+    display: flex;
+    text-align: center;
+    padding: 20px;
+}
+
+.logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+nav {
+    flex: 1;
+    text-align: center;
+}
+
+nav ul {
+    display: inline-block;
+    list-style-type: none;
+    margin-top: 50px;
+    margin-bottom: 25px;
+
+}
+
+nav ul li {
+    font-size: 20px;
+    display: inline-block;
+    margin-right: 30px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: antiquewhite;
+}
+
+
+
+/* ----------- Main ----------- */
+
+h2 {
+    color: antiquewhite;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+h4 {
+    color: antiquewhite;
+    text-align: center;
+    font-size: 11pt;
+}
+
+.phones-container {
+    max-width: 1080px;
+    margin: auto;
+    margin-top: 50px;
+    padding-left: 75px;
+    padding-right: 75px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.col-phones {
+    flex-basis: 25%;
+    padding: 10px;
+    min-width: 200px;
+    margin-bottom: 50px;
+}
+
+.col-phones img {
+    width: 100%;
+}
+
+.phones-container-2 {
+    max-width: 1080px;
+    margin: auto;
+    padding-left: 75px;
+    padding-right: 75px;
+}
+
+.row-2 {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.col-phones {
+    transition: transform 0.5s;
+}
+
+.col-phones:hover {
+    transform: translateY(-5px);
+    cursor: pointer;
+}
+
+
+
+/* ----------- Pop Up Window ----------- */
+
+.description {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    border-radius: 25px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: auto;
+    height: 40%;
+    background-color: white;
+    display: none;
+}
+
+.popup-content {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    width: 100%;
+    height: 100%;
+    font-weight: bolder;
+}
+
+.top-row {
+    display: flex;
+}
+
+.left_a, .right_a {
+    flex: 1; /* Make both columns take up equal space */
+    padding: 10px; /* Add padding or other styling as needed */
+    text-align: center; /* Optionally, center text content horizontally */
+}
+
+.right_a ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left; /* Align the list items to the left */
+    margin-top: 25px;
+}
+
+.right_a li {
+    margin-bottom: 5px; /* Add some spacing between list items if needed */
+}
+
+.img_class {
+    max-width: 350px; /* Set the desired maximum width */
+    max-height: 350px; /* Set the desired maximum height */
+    width: auto; /* Allow the image to scale proportionally */
+    height: auto; /* Allow the image to scale proportionally */
+}
+
+.bottom-row {
+    display: flex;
+    justify-content: space-between; /* Add space between the two buttons */
+}
+
+.show {
+    display: block;
+}
+
+.right_a p {
+    text-align: center;
+}
+
+
+
+/* ----------- Buttons ----------- */
+
+button{
+    display: flex;
+    justify-content: space-between; /* Adjusted to place buttons at the ends */
+    width: 50%;
+    background: transparent;
+    border: solid black 1px;
+    margin-bottom: 10px;
+    padding: 2px; /* Space around the text */
+    border-radius: 25px;
+    font-size: 16px;
+    transition: all 0.35s ease;
+}
+
+.popup-content button {
+    display: block;
+    width: 48%; /* Adjusted to leave space between buttons */
+    height: 195%;
+}
+
+button:hover{
+    cursor: pointer;
+}
+
+#closePopup {
+    background-color: orange;
+    color: black;
+}
+
+#addToCart {
+    background-color: olivedrab;
+    color: black;
+}
+
+
+
+/* ----------- Footer ----------- */
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    display: block;
+    text-align: center;
+    border-top: solid antiquewhite 1px;
+}
+
+footer ul {
+    display: inline-block;
+    list-style-type: none;
+    margin-top: 25px;
+    margin-bottom: 25px;
+
+}
+
+footer ul li {
+    color: antiquewhite;
+    font-size: 14px;
+    justify-content: center;
+    align-content: center;
+    display: inline-block;
+    margin-right: 30px;
+}
+
+footer ul li a {
+    text-decoration: none;
+    color: antiquewhite;
+}

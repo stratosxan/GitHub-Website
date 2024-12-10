@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Τηλέφωνα</title>
+    <link rel="stylesheet" href="phones.css" asp-append-version="true" />
+    <script src="loggedin.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lora:wght@500&family=Roboto+Condensed&family=Roboto+Slab&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.0/xlsx.full.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="navbar">
+            <nav>
+                <a href="homepage.html">
+                    <img class="logo" src="images/logo.png" alt="logo" width="125px" />
+                </a>
+                <ul>
+                    <li> <a href="homepage.html">Αρχική</a> </li>
+                    <li> <a href="phones.html">Κινητά Τηλέφωνα</a> </li>
+                    <li> <a href="cameras.html">Κάμερες Ασφαλείας</a> </li>
+                    <li> <a href="harddrives.html">Σκληροί δίσκοι</a> </li>
+                    <li> <a href="account.html" class="account">Λογαριασμός</a> </li>
+                </ul>
+                <a class="cart" href="cart.html">
+                    <img src="images/cart.png" width="30" height="20">
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="phones-container">
+            <h2> Κινητά Τηλέφωνα</h2>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer">
+            <ul class="footer-links">
+                <li> <a> Copyright &copy; eShop.com </a> </li>
+                <li> <a href="about.html"> Σχετικά </a> </li>
+                <li> <a href="policy.html"> Όροι χρήσης </a> </li>
+            </ul>
+        </div>
+    </footer>
+
+</body>
+
+<div id="descr" class="description">
+    <div class="popup-content">
+        <div class="top-row">
+            <div class="left_a">
+                <img id="popup-img" src="" alt="Estar T20" class="img_class">
+            </div>
+            <div class="right_a">
+                <h1></h1>
+                <ul>
+                    <li id="a1"></li>
+                    <li id="a2"></li>
+                    <li id="a3"></li>
+                    <li id="a4"></li>
+                    <li id="a5"></li>
+                </ul>
+            </div>
+        </div>
+        <div class="bottom-row">
+            <button id="closePopup" class="closepp">Κλείσιμο</button>
+            <button id="addToCart" class="addtc">Προσθήκη στο καλάθι</button>
+        </div>
+    </div>
+</div>
+
+</html>
+
+
+
+<!-- <script>
+    window.addEventListener('beforeunload', function () {
+    // Clear localStorage when the browser is closed or the tab is closed
+    localStorage.clear();
+});
+</script> -->
+
+<script>
+    if (!sessionStorage.getItem("sessionStarted")) {
+        localStorage.removeItem("cartItems");
+        sessionStorage.setItem("sessionStarted", "true");
+    }
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    document.getElementById("addToCart").addEventListener("click", function () {
+        var cartItem = {
+            image: document.getElementById("popup-img").src,
+            title: document.querySelector(".right_a h1").textContent,
+            a1: document.getElementById("a1").textContent,
+            a2: document.getElementById("a2").textContent,
+            a3: document.getElementById("a3").textContent,
+            a4: document.getElementById("a4").textContent,
+            a5: document.getElementById("a5").textContent,
+            quantity: 1
+        };
+
+        // Retrieve existing cart items from localStorage or initialize an empty array
+        var cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+
+
+        if (cartItems.length == 0) {
+            cartItems.push(cartItem);
+        } else {
+            var found = 0;
+            for (i = 0; i < cartItems.length; i++) {
+                item_id = cartItems[i].a1
+                if (cartItem.a1 == item_id) {
+                    // console.log("skata uparxei hdh");
+                    found = 1
+                    cartItems[i].quantity += 1;
+                }
+            }
+            if (found != 1) {
+                cartItems.push(cartItem);
+            }
+        }
+
+        // Save the updated array to localStorage
+        localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    });
+
+    document.getElementById("closePopup").addEventListener("click", function () {
+        document.getElementById("descr").classList.remove("show");
+    });
+
+
+</script>
+
+
+<script>
+
+    function fetchProductsAndCreateHTML(searchString) {
+        fetch(`/get-products?searchString=${searchString}`)
+            .then(response => response.json())
+            .then(products => {
+
+                // Calculate number of rows needed
+                const numRows = Math.ceil(products.length / 4);
+
+                // Get reference to the phones-container div
+                const phonesContainer = document.querySelector('.phones-container');
+
+                // Create HTML structure for each row
+                for (let i = 0; i < numRows; i++) {
+                    const rowDiv = document.createElement('div');
+                    rowDiv.classList.add('row');
+                    rowDiv.classList.add(`row-${i + 1}`);
+
+                    // Set 4 items per row
+                    const startIdx = i * 4;
+                    const endIdx = Math.min((i + 1) * 4, products.length);
+                    const productsInRow = products.slice(startIdx, endIdx);
+
+                    // Create HTML elements for each product in the row
+                    productsInRow.forEach(product => {
+                        const colDiv = document.createElement('div');
+                        colDiv.classList.add('col-phones');
+                        colDiv.id = product.productId;
+                        // ADD THE EVENT LISTENER FOR THIS DIV (FOR THE PRODUCT)
+                        // THIS WILL DISPLAY THE POP-UP WINDOW
+                        colDiv.addEventListener("click", function () {
+                            // Get the id for that product 
+                            const productId = colDiv.id;
+                            console.log()
+                            fetch(`/get-description?productId=${productId}`)
+                                .then(response => response.json())
+                                .then(data => {
+                                    console.log(data)
+                                    document.getElementById("descr").querySelector("h1").textContent = product.name;
+                                    document.getElementById("a1").textContent = "Κωδ. Προϊόντος(#):    " + product.productId;
+                                    document.getElementById("a2").textContent = "Περιγραφή: " + product.description;
+                                    document.getElementById("a3").textContent = "Τιμή αγοράς:   " + product.price + " €"; //+ " €"
+                                    document.getElementById("a4").textContent = "Τιμή αγοράς (με ΦΠΑ):   " + product.priceWithTax + " €"; //+ " €"
+                                    document.getElementById("a5").textContent = "Μοντέλο:    " + product.model;
+                                    document.getElementById("popup-img").src = product.image    //'images/phones/ESTART20/estar-1.png';
+                                    document.getElementById("descr").classList.add("show");
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                });
+                        });
+
+                        const img = document.createElement('img');
+                        img.src = product.image; // Add your image source here
+                        img.alt = product.name;
+
+                        const h4 = document.createElement('h4');
+                        h4.textContent = product.name;
+
+                        colDiv.appendChild(img);
+                        colDiv.appendChild(h4);
+
+                        rowDiv.appendChild(colDiv);
+                    });
+
+                    phonesContainer.appendChild(rowDiv); // Append the row to the phones-container div
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+
+
+    window.addEventListener('DOMContentLoaded', async () => {
+        const accountNav = document.querySelector('.account');
+        try {
+            const response = await fetch('/checkLoginStatus');
+            if (response.ok) {
+                const { loggedIn } = await response.json();
+                window.loggedIn = loggedIn;
+                if (window.loggedIn) {
+                    accountNav.innerHTML = '<a href="profile.html">Ο Λογαριασμός μου</a>';
+                } else {
+                    accountNav.innerHTML = '<a href="account.html">Σύνδεση</a>';
+                }
+            } else {
+                console.error('Error checking login status');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+        fetchProductsAndCreateHTML('01')
+
+
+    });
+</script>

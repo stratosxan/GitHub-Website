@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Λογαριασμός </title>
+    <link rel="stylesheet" href="register.css" asp-append-version="true" />
+    <script src="loggedin.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lora:wght@500&family=Roboto+Condensed&family=Roboto+Slab&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+
+    <header>
+        <div class="navbar">
+            <nav>
+                <a href="homepage.html">
+                    <img class="logo" src="images/logo.png" alt="logo" width="125px" />
+                </a>
+                <ul>
+                    <li> <a href="homepage.html">Αρχική</a> </li>
+                    <li> <a href="phones.html">Κινητά Τηλέφωνα</a> </li>
+                    <li> <a href="cameras.html">Κάμερες Ασφαλείας</a> </li>
+                    <li> <a href="harddrives.html">Σκληροί δίσκοι</a> </li>
+                    <li> <a href="account.html">Λογαριασμός</a> </li>
+                </ul>
+                <a class="cart" href="cart.html">
+                    <img src="images/cart.png" alt="shopping cart" width="30" height="20">
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="regcontainer">
+            <form action="" class="form">
+                <h1>Εγγραφή</h1>
+                <p>Παρακαλώ συμπληρώστε τα στοιχεία σας για την εγγραφή.</p>
+
+                <label for="email"><b>Email</b></label>
+                <input type="text" name="email" id="email" required>
+
+                <label for="username"><b>Όνομα Χρήστη</b></label>
+                <input type="text" name="username" id="username" required>
+
+                <label for="password"><b>Κωδικός</b></label>
+                <input type="password" name="password" id="password" required>
+
+                <label for="psw_repeat"><b>Επανέλαβε Κωδικό</b></label>
+                <input type="password" name="psw_repeat" id="psw-repeat" required>
+
+                <button type="submit" class="registerbtn">Εγγραφή</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer">
+            <ul class="footer-links">
+                <li> <a> Copyright &copy; eShop.com </a> </li>
+                <li> <a href="about.html"> Σχετικά </a> </li>
+                <li> <a href="policy.html"> Όροι χρήσης </a> </li>
+            </ul>
+        </div>
+    </footer>
+
+</body>
+
+
+<script>
+
+const form1 = document.querySelector('.form');
+
+form1.addEventListener('submit', async event => {
+    event.preventDefault();
+
+    const formData = new FormData(form1);
+    const data = {};
+
+    for (const [name, value] of formData) {
+        data[name] = value;
+    }
+
+    try {
+        const response = await fetch('/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+
+
+        if (response.status === 501) {
+            alert('Email already in use');
+        } else if (!response.ok) {
+            throw new Error('Network response was not ok');
+        } else {
+            // window.loggedIn = true;
+            window.loggedIn = true;
+            
+            console.log('Response from server:', response);
+            
+            window.location.href = 'homepage.html';
+        }
+
+    } catch (error) {
+        console.error('Error:', error.message);
+    }
+});
+
+</script>
+
+</html>

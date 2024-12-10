@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Καλάθι </title>
+    <link rel="stylesheet" href="./cart.css" asp-append-version="true" />
+    <script src="loggedin.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lora:wght@500&family=Roboto+Condensed&family=Roboto+Slab&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <header>
+        <div class="navbar">
+            <nav>
+                <a href="homepage.html">
+                    <img class="logo" src="images/logo.png" alt="logo" width="125px" />
+                </a>
+                <ul>
+                    <li> <a href="homepage.html">Αρχική</a> </li>
+                    <li> <a href="phones.html">Κινητά Τηλέφωνα</a> </li>
+                    <li> <a href="cameras.html">Κάμερες Ασφαλείας</a> </li>
+                    <li> <a href="harddrives.html">Σκληροί δίσκοι</a> </li>
+                    <li> <a href="account.html" class="account">Λογαριασμός</a> </li>
+                </ul>
+                <a class="cart" href="cart.html">
+                    <img src="images/cart.png" alt="shopping cart" width="30" height="20">
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div id="cartItemsDisplay" class="cartItems">
+        <div id="cartItem" class="cartItemContainer"></div>
+    </div>
+
+    <div class="cartButtons" id="paymentButtons">
+        <button id="proceedToPayment" class="cartButton">Προχωρήστε στο ταμείο</button>
+        <button id="continueShopping" class="cartButton">Συνεχίστε τις αγορές</button>
+    </div>
+
+
+
+    <div class="wrapper" id="wrapper_payment">
+        <h2>Φόρμα Πληρωμής</h2>
+        <form id="paymentForm">
+            <h4>Λογαριασμός</h4>
+            <div class="input-group">
+                <div class="input-box">
+                    <input type="text" placeholder="First Name" required class="name" name="first_name">
+                    <i class="fa fa-user icon"></i>
+                </div>
+                <div class="input-box">
+                    <input type="text" placeholder="Last Name" required class="name" name="last_name">
+                    <i class="fa fa-user icon"></i>
+                </div>
+            </div>
+            <div class="input-group">
+                <div class="input-box">
+                    <input type="email" placeholder="Email Adress" required class="name" name="email">
+                    <i class="fa fa-envelope icon"></i>
+                </div>
+            </div>
+            <div class="input-group">
+                <div class="input-box">
+                    <input type="tel" placeholder="Card Number" required class="name" name="card_number">
+                    <i class="fa fa-credit-card icon"></i>
+                </div>
+            </div>
+            <div class="input-group">
+                <div class="input-box">
+                    <input type="tel" placeholder="Card CVC" required class="name">
+                    <i class="fa fa-user icon"></i>
+                </div>
+                <div class="input-box">
+                    <select id="monthSelector" name="exp_month">
+                        <option value="January">Ιανουάριος</option>
+                        <option value="February">Φεβρουάριος</option>
+                        <option value="March">Μάρτιος</option>
+                        <option value="April">Απρίλιος</option>
+                        <option value="May">Μάιος</option>
+                        <option value="June">Ιούνιος</option>
+                        <option value="July">Ιούλιος</option>
+                        <option value="August">Αύγουστος</option>
+                        <option value="September">Σεπτέμβριος</option>
+                        <option value="October">Οκτώβριος</option>
+                        <option value="November">Νοέμβριος</option>
+                        <option value="December">Δεκέμβριος</option>
+                    </select>
+                    <select id="yearSelector" name="exp_year">
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                        <option value="2027">2027</option>
+                        <option value="2028">2028</option>
+                        <option value="2029">2029</option>
+                        <option value="2030">2030</option>
+                        <!-- Add other year options -->
+                    </select>
+                </div>
+            </div>
+            <div class="input-group">
+                <div class="input-box">
+                    <button type="submit" id="payNowBtn"> Πληρωμή </button>
+                </div>
+            </div>
+            <div class="close-form">
+                <button class="closeBtn" id="closeBtn"> Κλείσιμο </button>
+            </div>
+        </form>
+    </div>
+
+
+    <footer>
+        <div class="footer" id="cart_footer">
+            <ul class="footer-links">
+                <li> <a> Copyright &copy; eShop.com </a> </li>
+                <li> <a href="about.html"> Σχετικά </a> </li>
+                <li> <a href="policy.html"> Όροι χρήσης </a> </li>
+            </ul>
+        </div>
+    </footer>
+
+</body>
+
+</html>
+
+
+<script>
+    if (!sessionStorage.getItem("sessionStarted")) {
+        localStorage.removeItem("cartItems");
+        sessionStorage.setItem("sessionStarted", "true");
+    }
+    // Retrieve the array of cart items from localStorage
+    var cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+
+    // Display the items on the page
+    var cartItemsDisplay = document.getElementById("cartItemsDisplay");
+
+    function createCartItem(item, index) {
+        var itemDiv = document.createElement("div");
+        itemDiv.innerHTML = `
+            <img src="${item.image}" alt="Product Image">
+            <div class="item-description">
+                <h2>${item.title}</h2>
+                <p>${item.a1}</p>
+                <p>${item.a2}</p>
+                <p>${item.a3}</p>
+                <p>${item.a4}</p>
+                <p>${item.a5}</p>
+                <p id="quantity${index}">Ποσότητα: ${item.quantity}</p>
+                <button id="incr${index}" class="i" style="width:45%; height:50px;">+</button>
+                <button id="decr${index}" class="d" style="width:45%; height:50px;">-</button>
+            </div>
+        `;
+        cartItemsDisplay.appendChild(itemDiv);
+
+        // Add click event listeners
+        document.getElementById(`incr${index}`).addEventListener("click", function () {
+            // Increment quantity and update HTML
+            item.quantity += 1;
+            document.getElementById(`quantity${index}`).textContent = `Ποσότητα: ${item.quantity}`;
+        });
+
+        document.getElementById(`decr${index}`).addEventListener("click", function () {
+            // Decrement quantity and update HTML (you may want to add a check to prevent negative quantities)
+            item.quantity = Math.max(0, item.quantity - 1);
+            if (item.quantity === 0) {
+                cartItems.splice(index, 1);
+                localStorage.setItem("cartItems", JSON.stringify(cartItems));
+                cartItemsDisplay.removeChild(itemDiv);
+            } else {
+                localStorage.setItem("cartItems", JSON.stringify(cartItems));
+                document.getElementById(`quantity${index}`).textContent = `Ποσότητα: ${item.quantity}`;
+            }
+        });
+    }
+
+    // Use a regular for loop to access the index
+    for (let i = 0; i < cartItems.length; i++) {
+        createCartItem(cartItems[i], i);
+    }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        if (cartItems.length > 0) {
+            console.log(cartItems)
+            var cartItemsDisplay = document.getElementById('cartItemsDisplay');
+            var cartButtons = document.querySelector('.cartButtons');
+
+            // Function to check if cart is empty
+            function isCartEmpty() {
+                return cartItemsDisplay.children.length === 0;
+            }
+
+            // Function to toggle visibility of buttons based on cart items
+            function toggleButtonsVisibility() {
+                cartButtons.style.display = isCartEmpty() ? 'none' : 'block';
+            }
+
+            // Initial visibility check
+            toggleButtonsVisibility();
+
+            // Function to handle "Continue Shopping" button click
+            function continueShoppingHandler() {
+                // You can modify this function to redirect the user to the homepage
+                console.log('Continue Shopping clicked');
+                window.location.href = 'homepage.html';
+            }
+
+            // Event listeners for button clicks
+            document.getElementById('continueShopping').addEventListener('click', continueShoppingHandler);
+
+            // Optional: You can add an event listener for the "Proceed to Payment" button as well
+
+            // Whenever the cart items change, recheck visibility
+            cartItemsDisplay.addEventListener('DOMNodeInserted', toggleButtonsVisibility);
+            cartItemsDisplay.addEventListener('DOMNodeRemoved', toggleButtonsVisibility);
+
+            document.getElementById("proceedToPayment").addEventListener("click", function () {
+                var paymentWrapper = document.getElementById("wrapper_payment");
+
+                // Toggle the 'visible' class to show/hide the payment wrapper
+                paymentWrapper.classList.toggle("visible");
+            });
+
+            // Close button for payment form
+            document.getElementById("closeBtn").addEventListener("click", function () {
+                var paymentCloseBtn = document.getElementById("wrapper_payment");
+
+                // Hide payment form
+                paymentCloseBtn.classList.toggle("visible");
+            });
+
+        }
+        else {
+            var payment_buttons = document.getElementById("paymentButtons");
+            payment_buttons.style.visibility = 'hidden';
+        }
+
+    });
+
+
+
+    document.getElementById('paymentForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const formData = {};
+
+        // Loop through each form element and collect their values
+        const formElements = document.getElementById('paymentForm').elements;
+        for (let i = 0; i < formElements.length; i++) {
+            const element = formElements[i];
+            if (element.name) {
+                if (element.type === 'radio' && !element.checked) {
+                    continue; // Skip unchecked radio buttons
+                }
+                // console.log(element.name + ' == '+element.value)
+                formData[element.name] = element.value;
+            }
+        }
+
+        console.log(formData); // Verify the collected form data
+
+
+
+        var cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+        // console.log(cartItems);
+        var cart_items = [];
+        var total_price = 0;
+
+
+        for (i = 0; i < cartItems.length; i++) {
+            if (cartItems[i].image) {
+                var item = {
+                    "product_name": cartItems[i].title.replace('Όνομα προϊόντος:', ''),
+                    "price": cartItems[i].a3.replace('Τιμή αγοράς:', '').replace('€','').replace('',''),
+                    "quantity": cartItems[i].quantity,
+                    "image_path": decodeURIComponent(cartItems[i].image.replace('http://localhost:3000', '.')),
+                }
+                total_price += parseFloat(cartItems[i].a3.replace('Τιμή αγοράς:', '').replace('',''));
+
+                cart_items.push(item)
+
+            }
+        }
+        // console.log(cart_items)
+        formData["total_price"] = total_price;
+
+        formData["items"] = cart_items;
+
+        try {
+            const response = await fetch('/processPayment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json' // Set appropriate content type
+                },
+                body: JSON.stringify(formData) // Convert the object to JSON string
+            });
+
+            if (response.ok) {
+                console.log('Payment processed successfully');
+                localStorage.removeItem('cartItems');
+
+                // Redirect user to the homepage
+                window.location.href = 'homepage.html';
+            } else {
+                console.error('Payment processing failed');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+</script>
+
+
+<script>
+
+    window.addEventListener('DOMContentLoaded', async () => {
+        const accountNav = document.querySelector('.account');
+
+        try {
+            const response = await fetch('/checkLoginStatus');
+            if (response.ok) {
+                const { loggedIn } = await response.json();
+                window.loggedIn = loggedIn;
+
+                if (window.loggedIn) {
+                    accountNav.innerHTML = '<a href="profile.html">Ο Λογαριασμός μου</a>';
+                } else {
+                    accountNav.innerHTML = '<a href="account.html">Σύνδεση</a>';
+                }
+            } else {
+                console.error('Error checking login status');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+</script>

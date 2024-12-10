@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Λογαριασμός </title>
+    <link rel="stylesheet" href="account.css" asp-append-version="true" />
+    <script src="loggedin.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lora:wght@500&family=Roboto+Condensed&family=Roboto+Slab&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+
+    <header>
+        <div class="navbar">
+            <nav>
+                <a href="homepage.html">
+                    <img class="logo" src="images/logo.png" alt="logo" width="125px" />
+                </a>
+                <ul>
+                    <li> <a href="homepage.html"> Αρχική </a> </li>
+                    <li> <a href="phones.html"> Κινητά Τηλέφωνα </a> </li>
+                    <li> <a href="cameras.html"> Κάμερες Ασφαλείας </a> </li>
+                    <li> <a href="harddrives.html"> Σκληροί δίσκοι </a> </li>
+                    <li> <a href="account.html" class="account"> Λογαριασμός </a> </li>
+                </ul>
+                <a class="cart" href="cart.html">
+                    <img src="images/cart.png" alt="shopping cart" width="30" height="20">
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="login">
+            <form action="" class="form">
+                <h1> Σύνδεση </h1>
+                <div class="inputbox">
+                    <input name="username" type="text" placeholder="Username" required>
+                </div>
+                <div class="inputbox">
+                    <input name="password" type="password" placeholder="Password" required>
+                </div>
+                <div class="remember-forgot">
+                    <label>
+                        <input type="checkbox" name="checkbox"> Να με θυμάσαι
+                    </label>
+                    <a href="#"> Ξέχασες τον κωδικό; </a>
+                </div>
+                <button type="submit" class="btn"> Σύνδεση </button>
+                <div class="register-link">
+                    <p> Δεν έχετε κάνει εγγραφή; <a href="register.html"> Εγγραφή </a></p>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer">
+            <ul class="footer-links">
+                <li> <a> Copyright &copy; eShop.com </a> </li>
+                <li> <a href="about.html"> Σχετικά </a> </li>
+                <li> <a href="policy.html"> Όροι χρήσης </a> </li>
+            </ul>
+        </div>
+    </footer>
+
+</body>
+
+
+<script>
+    const form1 = document.querySelector('.form');
+
+    form1.addEventListener('submit', async (event) => { // Add async here
+        event.preventDefault();
+
+        const formData = new FormData(form1);
+        const data = {};
+
+        for (const [name, value] of formData) {
+            data[name] = value;
+        }
+
+        try {
+            const response = await fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.status === 401) {
+                alert('Wrong password');
+            } 
+            else if (response.status === 404) {
+                alert('User not found');
+            }
+            else if (!response.ok) {
+                console.log(response)
+                throw new Error('Login failed');
+            } else {
+                window.loggedIn = true;
+                
+                console.log('Response from server:', response);
+                
+                window.location.href = 'homepage.html';
+            }
+
+        } catch (error) {
+            console.error('Error:', error.message);
+        }
+
+
+});
+
+
+</script>
+<script>
+    
+    window.addEventListener('DOMContentLoaded', async () => {
+        const accountNav = document.querySelector('.account');
+        
+        try {
+            const response = await fetch('/checkLoginStatus');
+            if (response.ok) {
+                const { loggedIn } = await response.json();
+                window.loggedIn = loggedIn;
+    
+                if (window.loggedIn) {
+                    accountNav.innerHTML = '<a href="profile.html"> Ο Λογαριασμός μου </a>';
+                } else {
+                    accountNav.innerHTML = '<a href="account.html"> Σύνδεση </a>';
+                }
+            } else {
+                console.error('Error checking login status');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+    </script>
+</html>

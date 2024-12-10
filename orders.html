@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Λογαριασμός </title>
+    <link rel="stylesheet" href="orders.css" asp-append-version="true" />
+    <script src="loggedin.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lora:wght@500&family=Roboto+Condensed&family=Roboto+Slab&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+
+    <header>
+        <div class="navbar">
+            <nav>
+                <a href="homepage.html">
+                    <img class="logo" src="images/logo.png" alt="logo" width="125px" />
+                </a>
+                <ul>
+                    <li> <a href="homepage.html">Αρχική</a> </li>
+                    <li> <a href="phones.html">Κινητά Τηλέφωνα</a> </li>
+                    <li> <a href="cameras.html">Κάμερες Ασφαλείας</a> </li>
+                    <li> <a href="harddrives.html">Σκληροί δίσκοι</a> </li>
+                    <li> <a href="account.html" class="account">Λογαριασμός</a> </li>
+                </ul>
+                <a class="cart" href="cart.html">
+                    <img src="images/cart.png" alt="shopping cart" width="30" height="20">
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <h1 class="title_test"> Παραγγελίες Χρήστη </h1>
+        <div id="orders-container"></div>
+
+    </main>
+
+    <footer>
+        <div class="footer">
+            <ul class="footer-links">
+                <li> <a> Copyright &copy; eShop.com </a> </li>
+                <li> <a href="about.html"> Σχετικά </a> </li>
+                <li> <a href="policy.html"> Όροι χρήσης </a> </li>
+            </ul>
+        </div>
+    </footer>
+
+</body>
+
+<script>
+    window.addEventListener('DOMContentLoaded', async () => {
+        try {
+            const response = await fetch('/user-orders');
+            if (response.ok) {
+                const orders = await response.json();
+
+                displayOrders(orders);
+            } else {
+                console.error('Error fetching user orders');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+
+    function displayOrders(orders) {
+        const ordersContainer = document.getElementById('orders-container');
+        orders.forEach(order => {
+            const totalPrice = order.orders.reduce((total, item) => total + (item.price * item.quantity), 0);
+            const roundedTotalPrice = totalPrice.toFixed(2);
+
+            const orderElement = document.createElement('div');
+            orderElement.classList.add('order');
+            orderElement.innerHTML = `
+            <h3>Κωδικός Παραγγελίας: ${order.order_id}</h3>
+            <ul>
+                ${order.orders.map(item => `
+                    <li>
+                        <img src="${item.image_path}" alt="${item.product_name}" width="100">
+                        <div class="details">
+                            <p>Προϊόν: ${item.product_name}</p>
+                            <p>Τιμή: ${item.price} €</p>
+                            <p>Ποσότητα: ${item.quantity}</p>
+                        </div>
+                    </li>
+                    
+                `).join('')}
+                <li class="total">
+                    <p>Συνολική Τιμή: ${roundedTotalPrice} €</p>
+                </li>
+            </ul>
+            `;
+            ordersContainer.appendChild(orderElement);
+        });
+    }
+</script>
+
+<script>
+
+    window.addEventListener('DOMContentLoaded', async () => {
+        const accountNav = document.querySelector('.account');
+
+        try {
+            const response = await fetch('/checkLoginStatus');
+            if (response.ok) {
+                const { loggedIn } = await response.json();
+                window.loggedIn = loggedIn;
+
+                if (window.loggedIn) {
+                    accountNav.innerHTML = '<a href="profile.html">Ο Λογαριασμός μου</a>';
+                } else {
+                    accountNav.innerHTML = '<a href="account.html">Σύνδεση</a>';
+                }
+            } else {
+                console.error('Error checking login status');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+</script>
+</html>
